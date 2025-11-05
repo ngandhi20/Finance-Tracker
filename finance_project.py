@@ -14,7 +14,7 @@ c.execute("""CREATE TABLE transactions (
 
 conn.commit()
 conn.close()
-
+"hello"
 
 def main():
     '''this is the main part of my code'''
