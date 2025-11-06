@@ -56,5 +56,6 @@ def main() -> None:
         amt = str(input("\nenter the amount: "))
     
     print("\nok bye bye!")
+    "testing"
 
 main()
