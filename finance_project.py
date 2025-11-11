@@ -6,17 +6,49 @@ conn = sqlite3.connect(':memory:')
 c = conn.cursor()
 
 c.execute("""CREATE TABLE transactions (
-          id integer NOT NULL,
           date text NOT NULL,
-          amount integer NOT NULL,
+          amount REAL NOT NULL,
           category text NOT NULL
           )""")
 
 
-conn.commit()
+def insert_trans(trans):
+	with conn: #this gets rid of the need for a commit statement
+		c.execute("INSERT INTO transactions VALUES (:date, :amount, :category)",
+			     {'date': trans.date, 'amount': trans.amount, 'category': trans.category})
+
+
+def get_trans_by_date(date):
+	c.execute("SELECT * FROM transactions WHERE date = :date", {'date': date})
+	return c.fetchall()
+	
+	
+def update_amount(trans, amount):
+	with conn:
+		c.execute("""UPDATE Transactions SET amount = :amount
+								 WHERE date = :date AND category = :category""",
+								 {'amount': amount, 'date': trans.date, 'category': trans.category})
+
+'''
+def remove_trans(trans):
+	with conn:
+		c.execute("DELETE from transactions WHERE date = :date AND category last = :last",
+							{'first': emp.first, 'last': emp.last})
+need to figure out how to write this function'''
+
+
+trans_1 = Transactions('2025-11-11', 26.19, 'expense')
+trans_2 = Transactions('2025-11-10', 1000, 'income')
+
+insert_trans(trans_1)
+insert_trans(trans_2)
+
+transactions = get_trans_by_date('2025-11-10')
+print(transactions)
+
 conn.close()
 
-
+"""
 def exp_category(amt: float) -> str:
     print("\nSelect the expense category it lies under!")
     print("Shopping | Food | Social Life | Bills |")
@@ -60,3 +92,5 @@ def main() -> None:
     "testing"
 
 main()
+"""
+
