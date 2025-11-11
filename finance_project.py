@@ -1,16 +1,16 @@
 import sqlite3
 
-conn = sqlite3.connect('finance.db')
+conn = sqlite3.connect(':memory:')
 
 c = conn.cursor()
-'''
+
 c.execute("""CREATE TABLE transactions (
           id integer NOT NULL,
           date text NOT NULL,
           amount integer NOT NULL,
           category text NOT NULL
           )""")
-'''
+
 
 conn.commit()
 conn.close()
