@@ -1,4 +1,5 @@
 import sqlite3
+from transactions import Transactions
 
 conn = sqlite3.connect(':memory:')
 
