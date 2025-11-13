@@ -31,7 +31,6 @@ def update_amount(trans, amount):
     
     trans.amount = amount
 
-
 def remove_trans(trans):
 	with conn:
 		c.execute("DELETE from transactions WHERE date = :date AND category = :category AND amount = :amount",
@@ -53,8 +52,15 @@ def view_trans():
     get = get_trans_by_date(date)
     print(f"The transactions on that date are: {get}!")
 
-def remove_trans():
-     
+def choose_remove_trans():
+    print("\nLet's remove your transactions!")
+    date = input("Please enter the date of your transaction: ")
+    amount = input("Please enter the amount: ")
+    category = input("Please enter the category: ")
+    trans = Transactions(date, category, amount)
+    remove_trans(trans)
+
+    print("Transaction should be removed!")
 
 def main() -> None:
     print("----Welcome to your personal finance tracker!----")
@@ -79,12 +85,12 @@ def main() -> None:
         elif choice == 2:
             view_trans()
         elif choice == 3:
-            remove_trans()
+            choose_remove_trans()
+
         elif choice == 4:
             print("\nGoodbye! 👋")
             break
         else:
             print("❌ Invalid choice! Please enter 1-4")
-
 
 main()
