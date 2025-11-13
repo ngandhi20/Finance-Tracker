@@ -13,7 +13,7 @@ c.execute("""CREATE TABLE transactions (
 
 
 def insert_trans(trans):
-	with conn: #this gets rid of the need for a commit statement
+	with conn:
 		c.execute("INSERT INTO transactions VALUES (:date, :amount, :category)",
 			     {'date': trans.date, 'amount': trans.amount, 'category': trans.category})
 
@@ -37,86 +37,54 @@ def remove_trans(trans):
 		c.execute("DELETE from transactions WHERE date = :date AND category = :category AND amount = :amount",
 							{'date': trans.date,  'category': trans.category, 'amount': trans.amount})
 
+def add_trans():
+    print("\nLet's add your transaction!")
+    date = input("Please enter the transaction date ex.(2025-11-12): ")
+    amount = input("Enter the amount: ")
+    category = input("Enter the transaction category: ")
+    trans = Transactions(date, amount, category)
+    insert_trans(trans)
+
+    print("Transaction was successully added!")
+
+def view_trans():
+    print("\nLet's view your transactions!")
+    date = input("Which date would you like to view?: ")
+    get = get_trans_by_date(date)
+    print(f"The transactions on that date are: {get}!")
+
+def remove_trans():
+     
 
 def main() -> None:
-    trans_1 = Transactions('2025-11-11', 26.19, 'expense')
-    trans_2 = Transactions('2025-11-10', 1000, 'income')
-    trans_3 = Transactions('2025-11-10', 67.50, 'expense')
-	
-    insert_trans(trans_1)
-    insert_trans(trans_2)
-    insert_trans(trans_3)
-	
-    print("Transactions on 2025-11-11: ")
-    get_by_date = get_trans_by_date('2025-11-11')
-    print(get_by_date)
-	
-    print("\nTransactions on 2025-10-10: ")
-    get_by_date = get_trans_by_date('2025-11-10')
-    print(get_by_date)
-	
-    
-    print(f"\nB4 trans_2 amt is = {trans_2.amount}")
-    update_amount(trans_2, 998)
-    print(f"After amount update, trans_2 amt is = {trans_2.amount}")
-	
-	
-    print(f"\ntrans_3 amt is = {trans_3.amount}")
-	
-    print("Removing trans_3")
-    remove_trans(trans_3)
-	
-    remaining = get_trans_by_date('2025-11-10')
-    print(f"Remaining transactions on 2025-11-10 {remaining}")
+    print("----Welcome to your personal finance tracker!----")
 
-    conn.close()	
-	
-main()
+    while True:
+        print("\n----Please select an option below!----")
+        print("#1 : Add a transaction")
+        print("#2 : View your transactions") 
+        print("#3 : Remove a transaction")
+        print("#4 : Exit app")
+        
+        choice = input("Enter your choice (1-4): ")
+      
+        if not choice.isdigit():
+            print("❌ Please enter a number between 1-4")
+            continue
+            
+        choice = int(choice)
+        
+        if choice == 1:
+            add_trans()
+        elif choice == 2:
+            view_trans()
+        elif choice == 3:
+            remove_trans()
+        elif choice == 4:
+            print("\nGoodbye! 👋")
+            break
+        else:
+            print("❌ Invalid choice! Please enter 1-4")
 
-
-"""
-def exp_category(amt: float) -> str:
-    print("\nSelect the expense category it lies under!")
-    print("Shopping | Food | Social Life | Bills |")
-    exp_cat = input("\nPlease enter the expense category for this amount: ") 
-    result = f"\nthe expense category for ${abs(amt)} is {exp_cat}"
-    
-    return result
-
-
-def inc_category(amt: float) -> str:
-    print("\nSelect the income category it lies under!")
-    print("Salary | Socials")
-    inc_cat = input("\nPlease enter the income category for this amount: ")
-    result = f"\nthe income category for ${abs(amt)} is {inc_cat}"
-    
-    return result
-
-
-def transaction_type(amt):
-    '''orders amount as income or expense'''
-    if amt < 0:
-        return exp_category(amt)
-    elif amt > 0:
-        return inc_category(amt)
-
-
-def main() -> None:
-    '''this is the main part of my code'''
-    amt = '0'
-    amt = str(input("\nenter the amount: "))
-    while amt == '0':
-        print("Please enter your amount!")
-        amt = str(input("enter the amount: "))
-    
-    while amt != '':
-        result = transaction_type(float(amt))
-        print(result)
-        amt = str(input("\nenter the amount: "))
-    
-    print("\nok bye bye!")
-    "testing"
 
 main()
-"""
-
