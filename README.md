@@ -7,3 +7,6 @@ Nov 5th, 2025
 Nov 11th, 2025
 - learned sqlite and python connection basics
 - practiced using different functions in my project
+
+Nov 13th. 2025
+- added various functions to make the program user friendly
